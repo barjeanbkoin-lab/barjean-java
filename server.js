@@ -15,6 +15,7 @@ io.on('connection', (socket) => {
   });
 });
 
-http.listen(PORT, () => {
+  http.listen(PORT, () => {
   console.log('Chat Ivoire marche sur port ' + PORT);
 });
+
