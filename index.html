@@ -1,26 +1,66 @@
 <!DOCTYPE html>
-<html>
-<head><title>Chat Ivoire - BARJEAN 🇨🇮</title>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barjean Chat</title>
 <style>
-body{margin:0;font-family:Arial;background:#FFF8E7}
-.header{background:linear-gradient(90deg,#FF8200 0%,#fff 50%,#00A651 100%);padding:15px;text-align:center;font-weight:bold;font-size:22px;border-bottom:4px solid #000}
-#messages{height:80vh;overflow-y:auto;padding:15px}
-.msg{padding:10px;margin:8px;border-radius:15px;max-width:70%;background:white;border:1px solid #ddd}
-#form{display:flex;padding:10px;background:white;position:fixed;bottom:0;width:100%}
-input{flex:1;padding:12px;border-radius:25px;border:2px solid #00A651}
-button{background:#00A651;color:white;border:none;padding:12px 20px;border-radius:25px;margin-left:10px;font-weight:bold}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial;background:#0b141a;color:#fff;display:flex;flex-direction:column;height:100vh}
+.top{background:#202c33;padding:12px;font-weight:bold;display:flex;align-items:center;gap:10px}
+.top span{width:35px;height:35px;background:#00a884;border-radius:50%;display:flex;align-items:center;justify-content:center}
+#messages{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:8px;background:#111b21}
+.msg{background:#202c33;padding:8px 12px;border-radius:8px;max-width:80%;align-self:flex-start}
+.msg.me{align-self:flex-end;background:#005c4b}
+.msg b{color:#53bdeb;font-size:13px}
+.time{font-size:10px;opacity:0.6;float:right;margin:5px 0 0 10px}
+.bottom{display:flex;padding:10px;background:#202c33;gap:8px}
+.bottom input{flex:1;padding:12px;border-radius:25px;border:none;outline:none;background:#2a3942;color:#fff}
+.bottom button{padding:12px 20px;border-radius:25px;border:none;background:#00a884;color:#fff;font-weight:bold}
+#login{position:fixed;inset:0;background:#111b21;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;gap:15px}
+#login input{padding:12px 20px;border-radius:25px;border:none;width:250px;text-align:center}
+#login button{padding:12px 30px;border-radius:25px;border:none;background:#00a884;color:#fff;font-weight:bold}
 </style>
 </head>
 <body>
-<div class="header">🇨🇮 Chat Ivoire - BARJEAN 🇨🇮</div>
+<div id="login">
+<h2>Entre ton nom</h2>
+<input id="nameInput" placeholder="Ex: Barjean">
+<button onclick="enterChat()">Entrer</button>
+</div>
+<div class="top"><span>B</span> Barjean Groupe - <small id="count">0 en ligne</small></div>
 <div id="messages"></div>
-<form id="form"><input id="input" placeholder="Ecris un message..."/><button>Envoyer</button></form>
-<audio id="son" src="https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a650cd.mp3"></audio>
+<div class="bottom">
+<input id="msgInput" placeholder="Tape un message..." onkeypress="if(event.key==='Enter')send()">
+<button onclick="send()">Envoyer</button>
+</div>
+<audio id="ting" src="https://notificationsounds.com/storage/sounds/file-sounds-1150-pristine.mp3" preload="auto"></audio>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-const socket=io();const form=document.getElementById('form');const input=document.getElementById('input');const messages=document.getElementById('messages');const son=document.getElementById('son');
-form.addEventListener('submit',e=>{e.preventDefault();if(input.value){socket.emit('chat message',input.value);input.value=''}});
-socket.on('chat message',msg=>{const div=document.createElement('div');div.textContent=msg;div.className='msg';messages.appendChild(div);son.play();messages.scrollTop=messages.scrollHeight});
+let myName=""; let socket;
+function enterChat(){
+const v=document.getElementById('nameInput').value.trim();
+if(!v)return alert("Mets ton nom");
+myName=v;
+document.getElementById('login').style.display='none';
+socket=io();
+socket.on('chat message', (data)=>{
+const div=document.createElement('div');
+const isMe=data.user===myName;
+div.className='msg'+(isMe?' me':'');
+div.innerHTML='<b>'+ (isMe?'Toi':data.user) +'</b><br>'+data.text+'<span class="time">'+(data.time||'')+'</span>';
+document.getElementById('messages').appendChild(div);
+document.getElementById('messages').scrollTop=999999;
+if(!isMe)document.getElementById('ting').play().catch(()=>{});
+});
+socket.on('count', c=> document.getElementById('count').textContent=c+' en ligne');
+}
+function send(){
+const inp=document.getElementById('msgInput');
+if(!inp.value.trim())return;
+socket.emit('chat message',{user:myName,text:inp.value,time:new Date().toLocaleTimeString().slice(0,5)});
+inp.value='';
+}
 </script>
 </body>
 </html>
