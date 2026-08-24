@@ -1,4 +1,4 @@
-1  {
+{
   "name": "Barjean Chat",
   "short_name": "Barjean",
   "start_url": "./",
@@ -10,7 +10,7 @@
     "sizes": "512x512",
     "type": "image/png"
   }]
-}   
+}
    
      
    
