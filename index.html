@@ -1,155 +1,51 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Chat Ivoire</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Ivoire - BARJEAN</title>
 <style>
-body { font-family: Arial; background: #e5ddd5; margin:0; display:flex; justify-content:center; }
-.container { width:400px; height:90vh; background:white; margin-top:20px; display:flex; flex-direction:column; border-radius:10px; overflow:hidden; }
-.header { background:#075E54; color:white; padding:15px; text-align:center; font-weight:bold; }
-.chat-box { flex:1; overflow-y:auto; padding:15px; background:#ece5dd; }
-.message { background:white; padding:10px; margin:8px 0; border-radius:8px; max-width:70%; }
-.moi { background:#dcf8c6; margin-left:auto; }
-.input-zone { display:flex; padding:10px; background:#f0f0f0; gap:5px; }
-input { flex:1; padding:12px; border:none; border-radius:20px; outline:none; }
-button { background:#128C7E; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; }
+body{margin:0;font-family:Arial;background:#e5ddd5}
+.header{background:#075e54;color:white;padding:15px;font-size:20px;font-weight:bold;position:fixed;top:0;width:100%;z-index:10}
+#messages{padding:80px 15px 70px 15px;list-style:none;margin:0}
+#messages li{background:white;padding:10px 15px;border-radius:10px;margin-bottom:10px;max-width:70%;box-shadow:0 1px 1px #ccc}
+#messages li.moi{background:#dcf8c6;margin-left:auto}
+.form{position:fixed;bottom:0;width:100%;display:flex;background:#f0f0f0;padding:10px;box-sizing:border-box}
+#input{flex:1;padding:12px;border-radius:25px;border:1px solid #ccc;outline:none}
+button{background:#075e54;color:white;border:none;padding:12px 20px;border-radius:25px;margin-left:10px;font-weight:bold}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="header">🇨🇮 Chat Ivoire</div>
-<div class="chat-box" id="chat"></div>
-<div class="input-zone">
-<input type="text" id="nom" placeholder="Ton pseudo">
-<input type="text" id="msg" placeholder="Écris un message...">
-<button onclick="envoyer()">Envoyer</button>
-</div>
+<div class="header">💬 Chat Ivoire - BARJEAN</div>
+<ul id="messages"></ul>
+<div class="form">
+<input id="input" placeholder="Écris un message..." autocomplete="off"/>
+<button onclick="send()">Envoyer</button>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+const messages = document.getElementById('messages');
+const input = document.getElementById('input');
 
-// COLLE TA CONFIG FIREBASE ICI - Va dans Paramètres projet > SDK
-const firebaseConfig = {
-  apiKey: "AIzaSyC-FIDt2IB-HzyDKwOEIbUt5sTB8mdFKM",
-  authDomain: "chat-ivoire.firebaseapp.com",
-  projectId: "chat-ivoire",
-  storageBucket: "chat-ivoire.firebasestorage.app",
-  messagingSenderId: "598586912655",
-  appId: "1:598586912655:web:fd973fd69898a2246e65fa"
-};
-  
-  
-  
-  
-  
-  
+socket.on('old_messages', (msgs) => { msgs.forEach(addMessage); });
+socket.on('new_message', (data) => { addMessage(data); });
 
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.envoyer = async function() {
-  let nom = document.getElementById('nom').value.trim();
-  let msg = document.getElementById('msg').value.trim();
-  if(nom == "" || msg == "") { alert("Faut mettre un nom et un message bro !"); return; }
-  await addDoc(collection(db, "messages"), { pseudo: nom, texte: msg, date: serverTimestamp() });
-  document.getElementById('msg').value = "";
+function addMessage(data){
+  const li = document.createElement('li');
+  li.textContent = data;
+  messages.appendChild(li);
+  window.scrollTo(0, document.body.scrollHeight);
 }
 
-const q = query(collection(db, "messages"), orderBy("date"));
-onSnapshot(q, (snapshot) => {
-  let chat = document.getElementById('chat');
-  chat.innerHTML = "";
-  snapshot.forEach((doc) => {
-    let data = doc.data();
-    let div = document.createElement('div');
-    div.className = 'message moi';
-    div.innerHTML = `<b>${data.pseudo}:</b> ${data.texte}`;
-    chat.appendChild(div);
-  });
-  chat.scrollTop = chat.scrollHeight;
-});
-
-document.getElementById('msg').addEventListener('keypress', (e) => { if(e.key === 'Enter') envoyer(); });
+function send(){
+  if(input.value){
+    socket.emit('new_message', input.value);
+    input.value = '';
+  }
+}
+input.addEventListener('keypress', (e)=>{ if(e.key==='Enter') send(); });
 </script>
 </body>
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Chat Ivoire</title>
-<style>
-body { font-family: Arial; background: #e5ddd5; margin:0; display:flex; justify-content:center; }
-.container { width:400px; height:90vh; background:white; margin-top:20px; display:flex; flex-direction:column; border-radius:10px; overflow:hidden; }
-.header { background:#075E54; color:white; padding:15px; text-align:center; font-weight:bold; }
-.chat-box { flex:1; overflow-y:auto; padding:15px; background:#ece5dd; }
-.message { background:white; padding:10px; margin:8px 0; border-radius:8px; max-width:70%; }
-.moi { background:#dcf8c6; margin-left:auto; }
-.input-zone { display:flex; padding:10px; background:#f0f0f0; gap:5px; }
-input { flex:1; padding:12px; border:none; border-radius:20px; outline:none; }
-button { background:#128C7E; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; }
-</style>
-</head>
-<body>
-<div class="container">
-<div class="header">🇨🇮 Chat Ivoire</div>
-<div class="chat-box" id="chat"></div>
-<div class="input-zone">
-<input type="text" id="nom" placeholder="Ton pseudo">
-<input type="text" id="msg" placeholder="Écris un message...">
-<button onclick="envoyer()">Envoyer</button>
-</div>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
-// COLLE TA CONFIG FIREBASE ICI - Va dans Paramètres projet > SDK
-const firebaseConfig = {
-  apiKey: "AIzaSyC-FIDt2IB-HzyDKwOEIbUt5sTB8mdFKM",
-  authDomain: "chat-ivoire.firebaseapp.com",
-  projectId: "chat-ivoire",
-  storageBucket: "chat-ivoire.firebasestorage.app",
-  messagingSenderId: "598586912655",
-  appId: "1:598586912655:web:fd973fd69898a2246e65fa"
-};
-  
-  
-  
-  
-  
-  
-
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.envoyer = async function() {
-  let nom = document.getElementById('nom').value.trim();
-  let msg = document.getElementById('msg').value.trim();
-  if(nom == "" || msg == "") { alert("Faut mettre un nom et un message bro !"); return; }
-  await addDoc(collection(db, "messages"), { pseudo: nom, texte: msg, date: serverTimestamp() });
-  document.getElementById('msg').value = "";
-}
-
-const q = query(collection(db, "messages"), orderBy("date"));
-onSnapshot(q, (snapshot) => {
-  let chat = document.getElementById('chat');
-  chat.innerHTML = "";
-  snapshot.forEach((doc) => {
-    let data = doc.data();
-    let div = document.createElement('div');
-    div.className = 'message moi';
-    div.innerHTML = `<b>${data.pseudo}:</b> ${data.texte}`;
-    chat.appendChild(div);
-  });
-  chat.scrollTop = chat.scrollHeight;
-});
-
-document.getElementById('msg').addEventListener('keypress', (e) => { if(e.key === 'Enter') envoyer(); });
-</script>
-</body>s
 </html>
