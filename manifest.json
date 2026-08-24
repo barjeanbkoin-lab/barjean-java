@@ -1,0 +1,9 @@
+1  {
+2    "name": "Barjean Chat",
+3    "short_name": "Barjean",
+4    "start_url": "/",
+5    "display": "standalone",
+6    "background_color": "#0a332d",
+7    "theme_color": "#0a332d",
+8    "icons": [{ "src": "https://cdn-icons-png.flaticon.com/512/134/134808.png", "sizes": "512x512", "type": "image/png" }]
+9  }
