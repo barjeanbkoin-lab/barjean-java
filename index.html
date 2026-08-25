@@ -63,5 +63,8 @@ socket.emit('chat message',{user:myName,text:inp.value,time:new Date().toLocaleT
 inp.value='';
 }
 </script>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js')}
+</script>
 </body>
 </html>
