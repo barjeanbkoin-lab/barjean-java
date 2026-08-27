@@ -1,59 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chat Ivoire - Facebook Ivoirien 🇨🇮</title>
-<style>
-*{margin:0;box-sizing:border-box}body{font-family:Arial;background:#f0f2f5}
-.viral{background:#111;color:#fff;text-align:center;padding:8px;font-weight:bold;font-size:13px;position:sticky;top:0;z-index:20}
-.header{background:#ff6a00;color:#fff;padding:10px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:28px;z-index:19}
-.btn{padding:7px 12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
-.btn-w{background:#25D366;color:#fff}.btn-o{background:#fff;color:#ff6a00}
-.card{background:#fff;margin:10px;border-radius:12px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;border-top:1px solid #ddd;padding:8px 0;z-index:20}
-.bottom button{border:none;background:none;font-size:12px;font-weight:bold;cursor:pointer;padding:6px}
-.bottom.active{color:#ff6a00}
-.tab{display:none;padding-bottom:70px}.tab.active{display:block}
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chat Ivoire 🇨🇮</title>
+<style>*{margin:0;box-sizing:border-box}body{font-family:Arial;background:#f0f2f5}
+.viral{background:#000;color:#fff;text-align:center;padding:8px;font-size:13px;font-weight:bold;position:fixed;top:0;left:0;right:0;z-index:100}
+.header{background:#ff6a00;color:#fff;padding:10px;display:flex;align-items:center;gap:10px;position:fixed;top:28px;left:0;right:0;z-index:99}
+.sidebar{position:fixed;top:68px;left:0;bottom:0;width:220px;background:#fff;border-right:1px solid #ddd;padding:10px;overflow:auto}
+.content{margin-left:230px;margin-top:80px;padding:10px;padding-bottom:80px}
+.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 2px 5px rgba(0,0,0,.1)}
+.item{padding:10px;border-radius:8px;cursor:pointer}.item:hover{background:#ffe9d6}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;border-top:1px solid #ddd;padding:8px;z-index:99}
+@media(max-width:700px){.sidebar{display:none}.content{margin-left:0}}
 </style></head><body>
-<div class="viral">🔥 1,247 Ivoiriens en ligne • 🇨🇮 100% CI • Invite tes amis!</div>
-<div class="header"><b>Chat Ivoire 🇨🇮</b><div><button class="btn btn-o" onclick="publier()">+ Publier</button> <button class="btn btn-w" onclick="shareWA()">WhatsApp</button></div></div>
-
-<div id="chat" class="tab active"><div class="card"><b>🎉 Bienvenue sur Chat Ivoire!</b><br>Le réseau 100% Ivoirien créé à Abidjan. Clique + Publier pour commencer!</div><div id="feed"></div></div>
-
-<div id="camera" class="tab"><div class="card"><b>📸 Caméra</b><br><input type="file" accept="image/*" onchange="preview(this)"><div id="preview"></div></div></div>
-
-<div id="amis" class="tab"><div class="card"><b>👥 Amis - Côte d'Ivoire</b><br><br>• Adjoua - Abidjan (en ligne)<br>• Kader - Bouaké (en ligne)<br>• Fatou - Yamoussoukro<br><br><button class="btn btn-w" onclick="shareWA()">Inviter mes amis WhatsApp</button></div></div>
-
-<div id="commu" class="tab"><div class="card"><b>🇨🇮 Communauté Ivoirienne</b><br><br>Groupe officiel Chat Ivoire<br>100% humour ivoirien, drague, business<br><br>Partage le lien pour devenir populaire!</div></div>
-
-<div class="bottom">
-<button id="b-chat" class="active" onclick="show('chat',this)">💬<br>Chat</button>
-<button id="b-camera" onclick="show('camera',this)">📸<br>Caméra</button>
-<button id="b-amis" onclick="show('amis',this)">👥<br>Amis</button>
-<button id="b-commu" onclick="show('commu',this)">🇨🇮<br>Commu</button>
+<div class="viral">🔥 1,247 Ivoiriens en ligne • Invite tes amis WhatsApp!</div>
+<div class="header"><b>☰ Chat Ivoire CI - 100% Ivoirien 🇨🇮</b><div style="margin-left:auto"><button onclick="publier()" style="padding:6px 10px;border:none;border-radius:6px;font-weight:bold;background:#fff;color:#ff6a00">+ Publier</button> <button onclick="shareWA()" style="padding:6px 10px;border:none;border-radius:6px;background:#25D366;color:#fff;font-weight:bold">WhatsApp</button></div></div>
+<div class="sidebar">
+<div class="item" onclick="tab('chat')">💬 Chat</div>
+<div class="item" onclick="tab('camera')">📸 Caméra</div>
+<div class="item" onclick="tab('amis')">👥 Amis</div>
+<div class="item" onclick="tab('commu')">🇨🇮 Communauté</div>
+<div class="item">🔥 Tendances CI</div>
+<div class="item">🎥 Vidéos</div>
+<div class="item">🎵 Musique Ivoirienne</div>
+<div class="item">💼 Business</div>
+<hr style="margin:10px 0">
+<div style="font-size:12px;color:#666">© Chat Ivoire - Abidjan<br>Créé par Jeff</div>
 </div>
-
+<div class="content">
+<div id="c-chat"><div class="card"><b>Bienvenue! 🇨🇮</b><br>Le Facebook 100% Ivoirien est de retour avec tous les menus!</div><div id="feed"></div></div>
+<div id="c-camera" style="display:none"><div class="card"><b>📸 Caméra</b><br><input type="file" accept="image/*" onchange="prev(this)"><div id="pv"></div></div></div>
+<div id="c-amis" style="display:none"><div class="card">👥 Amis en ligne: Adjoua, Kader, Fatou - Abidjan, Bouaké, Yakro<br><br><button onclick="shareWA()" style="background:#25D366;color:#fff;padding:8px 12px;border:none;border-radius:8px">Inviter sur WhatsApp</button></div></div>
+<div id="c-commu" style="display:none"><div class="card">🇨🇮 Communauté Ivoirienne - Partage et deviens star!</div></div>
+</div>
+<div class="bottom"><button onclick="tab('chat')">💬 Chat</button><button onclick="tab('camera')">📸 Caméra</button><button onclick="tab('amis')">👥 Amis</button><button onclick="tab('commu')">🇨🇮 Commu</button></div>
 <script>
-function show(id,el){
- document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
- el.classList.add('active');
-}
-function publier(){
- let t=prompt("Qu'est-ce que tu veux dire à la Côte d'Ivoire? 🇨🇮");
- if(!t)return;
- let d=document.createElement("div");d.className="card";
- d.innerHTML="<b>Toi - Maintenant 🇨🇮</b><br><br>"+t+"<br><br>❤️ 0 😂 0";
- document.getElementById("feed").prepend(d);
-}
-function shareWA(){
- let url=window.location.href;
- window.open("https://wa.me/?text=Rejoins%20Chat%20Ivoire%20🇨🇮%20Le%20Facebook%20Ivoirien%20cree%20a%20Abidjan!%20"+encodeURIComponent(url));
-}
-function preview(input){
- if(input.files && input.files[0]){
-  let r=new FileReader();
-  r.onload=e=>document.getElementById("preview").innerHTML="<img src='"+e.target.result+"' style='width:100%;border-radius:12px;margin-top:10px'>";
-  r.readAsDataURL(input.files[0]);
- }
-}
+function tab(t){document.getElementById('c-chat').style.display=t=='chat'?'block':'none';document.getElementById('c-camera').style.display=t=='camera'?'block':'none';document.getElementById('c-amis').style.display=t=='amis'?'block':'none';document.getElementById('c-commu').style.display=t=='commu'?'block':'none'}
+function publier(){let m=prompt("Ton message pour la CI 🇨🇮");if(!m)return;let d=document.createElement("div");d.className="card";d.innerHTML="<b>Toi 🇨🇮</b><br><br>"+m;document.getElementById("feed").prepend(d)}
+function shareWA(){window.open("https://wa.me/?text=Viens%20sur%20Chat%20Ivoire%20🇨🇮%20"+encodeURIComponent(location.href))}
+function prev(i){if(i.files[0]){let r=new FileReader();r.onload=e=>document.getElementById("pv").innerHTML="<img src='"+e.target.result+"' style='width:100%;border-radius:12px;margin-top:10px'>";r.readAsDataURL(i.files[0])}}
 </script></body></html>
