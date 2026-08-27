@@ -41,5 +41,32 @@ async function login(){let e=document.getElementById('email').value,p=document.g
 function logout(){localStorage.clear();location.reload()}
 document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();let el=document.getElementById('input');let t=el.value.trim();if(t){socket.emit('chat message',t);el.value=''}})
 </script>
+</body>// NOUVEAU: Supprimer la dernière photo / erreur caméra
+function supprimerDernierePhoto(){
+  let chat = document.getElementById('messages') || document.getElementById('chat');
+  function supprimerDernierePhoto(){
+  let chat = document.getElementById('chat');
+  if(chat && chat.lastElementChild){
+    chat.lastElementChild.remove();
+  }
+  let input = document.getElementById('input');
+  if(input) input.value = '';
+  alert('Dernière photo supprimée - tu peux reprendre!');
+}
+function reprendreCamera(){
+  location.reload();
+}
+</script>
+
+
+
+<button onclick="supprimerDernierePhoto()" style="background:black;color:white;padding:12px;width:100%;border-radius:10px;margin-top:10px;font-weight:bold">🗑️ SUPPRIMER MAUVAISE PHOTO</button>
 </body>
 </html>
+ 
+
+
+  
+
+
+
