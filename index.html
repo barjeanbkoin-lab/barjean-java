@@ -45,19 +45,30 @@ document.getElementById('form').addEventListener('submit',e=>{e.preventDefault()
 function supprimerDernierePhoto(){
   let chat = document.getElementById('messages') || document.getElementById('chat');
   function supprimerDernierePhoto(){
-  let chat = document.getElementById('chat');
-  if(chat && chat.lastElementChild){
-    chat.lastElementChild.remove();
-  }
-  
-  
-  
+  function supprimerDernierePhoto(){
+let chat=document.getElementById('chat');
+if(chat && chat.lastElementChild){
+chat.lastElementChild.remove();
+alert('Photo supprimée!');
 }
+}
+</script>
+
+<button onclick="supprimerDernierePhoto()" style="background:black;color:white;padding:12px;width:100%;border-radius:10px;margin-top:10px;font-weight:bold">🗑️ SUPPRIMER MAUVAISE PHOTO</button>
+</body>
+</html>
+  
+    
+  
+  
+  
+  
+
 
   
   
-}
-</script>
+
+
 
 
 
