@@ -45,7 +45,23 @@ document.getElementById('form').addEventListener('submit',e=>{e.preventDefault()
 function supprimerDernierePhoto(){
   let chat = document.getElementById('messages') || document.getElementById('chat');
   function supprimerDernierePhoto(){
-  function supprimerDernierePhoto(){
+ // Cherche la dernière image sur toute la page
+ let toutesImages = document.querySelectorAll('img');
+ if(toutesImages.length > 0){
+   let derniere = toutesImages[toutesImages.length-1];
+   // Supprime la carte entière
+   let carte = derniere.closest('div');
+   if(carte) carte.remove();
+   else derniere.remove();
+ }
+ // Supprime aussi du stockage pour que ça ne revienne pas
+ localStorage.removeItem('chatMessages');
+ localStorage.removeItem('commuMessages');
+ localStorage.removeItem('messages');
+ alert('✅ Photo supprimée! Actualise la page');
+ location.reload();
+}
+
 let chat=document.getElementById('chat');
 if(chat && chat.lastElementChild){
 chat.lastElementChild.remove();
