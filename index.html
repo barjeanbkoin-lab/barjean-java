@@ -49,15 +49,13 @@ function supprimerDernierePhoto(){
   if(chat && chat.lastElementChild){
     chat.lastElementChild.remove();
   }
-  let input = document.getElementById('input');
-  if(input) input.value = '';
-  alert('Dernière photo supprimée - tu peux reprendre!');
+  
+  
+  
 }
-function reprendreCamera(){
-  location.reload();
-}function supprimerDernierePhoto(){
-  let imgs=document.querySelectorAll('img');
-  if(imgs.length>0){imgs[imgs.length-1].remove();alert('Photo supprimée!')}
+
+  
+  
 }
 </script>
 
