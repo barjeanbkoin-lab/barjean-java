@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chat Ivoire</title>
 <style>
 :root{--bg:white;--text:black;--gray:#f0f2f5;--border:#eee;--orange:#ff8c00}
@@ -10,111 +9,88 @@ body.dark{--bg:#121212;--text:white;--gray:#2a2a2a;--border:#333}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Helvetica,Arial,sans-serif}
 body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column}
 header{padding:12px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-header h1{color:var(--orange);font-size:22px;font-weight:900} header h1 span{color:#009a44}
+header h1{color:var(--orange);font-size:24px;font-weight:900} header h1 span{color:#009a44}
 .tab{display:none;flex:1;overflow-y:auto;flex-direction:column} .tab.active{display:flex}
 .list{flex:1;overflow-y:auto}
-.chat{display:flex;gap:12px;padding:11px 14px;cursor:pointer} .chat img{width:52px;height:52px;border-radius:50%}
-.info{flex:1;overflow:hidden} .info b{font-size:15px} .info p{color:#65676b;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat{display:flex;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border)} .chat:active{background:var(--gray)}
+.chat img{width:52px;height:52px;border-radius:50%} .info{flex:1} .info p{color:#65676b;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.person{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--border)} .person img{width:50px;height:50px;border-radius:50%}
 #chatView{display:none;flex-direction:column;height:100vh;position:fixed;top:0;left:0;width:100%;background:var(--bg);z-index:50}
-.chatHeader{padding:10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:var(--bg)}
+.chatHeader{padding:10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
 .chatHeader img{width:40px;height:40px;border-radius:50%}
-.messages{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px;background:#f0f2f5}
-body.dark .messages{background:#1a1a1a}
-.msg{max-width:70%;padding:10px 14px;border-radius:18px;font-size:15px;position:relative}
+.messages{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px;background:#e5ddd5}
+body.dark .messages{background:#0a0a0a}
+.msg{max-width:72%;padding:10px 14px;border-radius:18px;font-size:15px;position:relative;cursor:pointer}
 .msg.me{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:4px}
 .msg.other{align-self:flex-start;background:white;color:black;border-bottom-left-radius:4px}
-body.dark .msg.other{background:#2a2a2a;color:white}
-.msg img{max-width:200px;border-radius:12px;margin-top:5px}
-.msg .del{position:absolute;top:-8px;right:-8px;background:red;color:white;border-radius:50%;width:20px;height:20px;display:none;justify-content:center;align-items:center;font-size:12px;cursor:pointer}
-.msg:hover .del{display:flex}
+.msg img{max-width:180px;border-radius:12px}
 .inputBar{display:flex;align-items:center;gap:8px;padding:10px;background:var(--bg);border-top:1px solid var(--border)}
-.inputBar input{flex:1;padding:12px 15px;border-radius:20px;border:none;background:var(--gray);outline:none;color:var(--text);font-size:15px}
-.iconBtn{width:38px;height:38px;border-radius:50%;display:flex;justify-content:center;align-items:center;background:var(--gray);cursor:pointer;font-size:20px}
+.inputBar input{flex:1;padding:12px 15px;border-radius:20px;border:none;background:var(--gray);outline:none;color:var(--text)}
+.iconBtn{width:38px;height:38px;border-radius:50%;display:flex;justify-content:center;align-items:center;background:var(--gray);cursor:pointer}
 .iconBtn.orange{background:var(--orange);color:white}
 #cameraBox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:black;z-index:100;flex-direction:column}
 #cameraBox video{flex:1;object-fit:cover}
 .camControls{display:flex;justify-content:space-around;padding:20px;background:black}
-.camBtn{width:60px;height:60px;border-radius:50%;background:white;display:flex;justify-content:center;align-items:center;font-size:28px;cursor:pointer}
-nav{display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid var(--border);background:var(--bg)}
-nav div{text-align:center;color:#65676b;font-size:11px;cursor:pointer;padding:4px 15px} nav div.active{color:var(--orange)} nav div span{font-size:22px;display:block}
-.menu-item{padding:18px;display:flex;gap:15px;border-bottom:1px solid var(--border);cursor:pointer}
+.camBtn{width:60px;height:60px;border-radius:50%;background:white;display:flex;justify-content:center;align-items:center;font-size:26px;cursor:pointer}
+nav{display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid var(--border);background:var(--bg)}
+nav div{text-align:center;color:#65676b;font-size:10px;cursor:pointer;padding:4px 12px;border-radius:10px} nav div.active{color:var(--orange);background:#fff3e6} body.dark nav div.active{background:#3a2a00} nav div span{font-size:20px;display:block}
+.menu-item{padding:16px;display:flex;gap:15px;border-bottom:1px solid var(--border);cursor:pointer} .menu-item:active{background:var(--gray)}
 </style>
 </head>
 <body>
-
-<!-- LISTE PRINCIPALE -->
 <div id="mainPage" style="display:flex;flex-direction:column;height:100vh;flex:1">
 <header><h1>chat<span>ivoire</span></h1><div>✏️</div></header>
 
-<div id="tab-discussions" class="tab active">
-<div class="list">
+<div id="tab-discussions" class="tab active"><div class="list">
 <div class="chat" onclick="openChat('Rosy Yao','https://i.pravatar.cc/100?img=10')"><img src="https://i.pravatar.cc/100?img=10"><div class="info"><b>Rosy Yao</b><p>Vous: Joyeux anniversaire 🎉</p></div></div>
 <div class="chat" onclick="openChat('Edwige N\'goran','https://i.pravatar.cc/100?img=11')"><img src="https://i.pravatar.cc/100?img=11"><div class="info"><b>Edwige N'goran</b><p>Vidéo BOIS...</p></div></div>
 <div class="chat" onclick="openChat('Grâce Douhe','https://i.pravatar.cc/100?img=12')"><img src="https://i.pravatar.cc/100?img=12"><div class="info"><b>Grâce Douhe</b><p>A la maison et toi</p></div></div>
-</div>
-</div>
+</div></div>
 
-<div id="tab-menu" class="tab"><div style="padding:20px;text-align:center"><img src="https://i.pravatar.cc/100?img=1" style="width:80px;height:80px;border-radius:50%"><h3>Jeff Bezos</h3></div>
-<div class="menu-item" onclick="toggleDark()"><span>🌙</span> Mode sombre</div>
-<div class="menu-item" onclick="alert('Paramètres bientôt')"><span>⚙️</span> Paramètres</div>
+<div id="tab-personnes" class="tab"><div class="list">
+<div class="person"><img src="https://i.pravatar.cc/100?img=2"><div><b>Daniel Koné</b><p style="color:#65676b;font-size:12px">En ligne</p></div></div>
+<div class="person"><img src="https://i.pravatar.cc/100?img=3"><div><b>Koffi Gérard</b><p style="color:#65676b;font-size:12px">Actif il y a 2 min</p></div></div>
+<div class="person"><img src="https://i.pravatar.cc/100?img=10"><div><b>Rosy Yao</b><p style="color:#65676b;font-size:12px">En ligne</p></div></div>
+</div></div>
+
+<div id="tab-notifs" class="tab"><div style="padding:15px"><h3>🔔 Notifications</h3><p style="margin-top:12px;background:var(--gray);padding:12px;border-radius:10px">💬 <b>Edwige</b> a réagi 😍<br><small>Il y a 5 min</small></p><p style="margin-top:10px;background:var(--gray);padding:12px;border-radius:10px">👥 <b>Daniel</b> t'a ajouté<br><small>Il y a 1h</small></p></div></div>
+
+<div id="tab-menu" class="tab"><div style="padding:20px;text-align:center"><img src="https://i.pravatar.cc/100?img=1" style="width:80px;height:80px;border-radius:50%"><h3>Jeff Bezos</h3><p style="color:#65676b">Voir profil</p></div>
+<div class="menu-item" onclick="toggleDark()"><span>🌙</span> Mode sombre <span id="darkTxt" style="margin-left:auto;color:#ff8c00"></span></div>
+<div class="menu-item" onclick="alert('⚙️ Paramètres: Langue Français 🇨🇮')"><span>⚙️</span> Paramètres</div>
+<div class="menu-item" onclick="alert('🔒 Messages chiffrés, serveur CI 🇨🇮')"><span>🔒</span> Confidentialité</div>
+<div class="menu-item" onclick="if(confirm('Se déconnecter?'))location.reload()"><span>🚪</span> Déconnexion</div>
 </div>
 
 <nav>
-<div class="active" onclick="showTab('discussions',this)"><span>💬</span>Discussions</div>
-<div onclick="showTab('menu',this)"><span>☰</span>Menu</div>
+<div class="active" id="b1" onclick="showTab('discussions',this)"><span>💬</span>Discussions</div>
+<div id="b2" onclick="showTab('personnes',this)"><span>👥</span>Personnes</div>
+<div id="b3" onclick="showTab('notifs',this)"><span>🔔</span>Notifs</div>
+<div id="b4" onclick="showTab('menu',this)"><span>☰</span>Menu</div>
 </nav>
 </div>
 
-<!-- PAGE CHAT AVEC CLAVIER + CAMERA -->
 <div id="chatView">
-<div class="chatHeader"><span onclick="closeChat()" style="font-size:24px;cursor:pointer">←</span><img id="chatImg" src=""><b id="chatName"></b><div style="margin-left:auto;display:flex;gap:15px;font-size:22px"><span onclick="startCamera()">📷</span><span>📞</span></div></div>
+<div class="chatHeader"><span onclick="closeChat()" style="font-size:24px;cursor:pointer">←</span><img id="chatImg"><b id="chatName"></b><div style="margin-left:auto;display:flex;gap:12px;font-size:20px"><span onclick="startCamera()">📷</span><span>📞</span></div></div>
 <div class="messages" id="messages"></div>
-<div class="inputBar">
-<div class="iconBtn" onclick="startCamera()">📷</div>
-<input id="msgInput" placeholder="Aa" type="text" onkeypress="if(event.key==='Enter')sendMsg()">
-<div class="iconBtn" onclick="clearInput()">❌</div>
-<div class="iconBtn orange" onclick="sendMsg()">➤</div>
-</div>
+<div class="inputBar"><div class="iconBtn" onclick="startCamera()">📷</div><input id="msgInput" placeholder="Aa" onkeypress="if(event.key==='Enter')sendMsg()"><div class="iconBtn" onclick="clearInput()">❌</div><div class="iconBtn orange" onclick="sendMsg()">➤</div></div>
 </div>
 
-<!-- CAMERA AVANT / ARRIERE -->
-<div id="cameraBox">
-<video id="video" autoplay playsinline></video>
-<div class="camControls">
-<div class="camBtn" onclick="closeCamera()">❌</div>
-<div class="camBtn" style="width:75px;height:75px;background:white;border:4px solid #ff8c00" onclick="takePhoto()">📸</div>
-<div class="camBtn" onclick="flipCamera()">🔄</div>
-</div>
-</div>
+<div id="cameraBox"><video id="video" autoplay playsinline></video><div class="camControls"><div class="camBtn" onclick="closeCamera()">❌</div><div class="camBtn" style="width:75px;height:75px;border:3px solid #ff8c00" onclick="takePhoto()">📸</div><div class="camBtn" onclick="flipCamera()">🔄</div></div></div>
 
 <script>
-let currentStream=null, facing='user';
+let stream=null,facing='user';
 function showTab(n,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');document.querySelectorAll('nav div').forEach(b=>b.classList.remove('active'));el.classList.add('active')}
-function openChat(name,img){document.getElementById('chatName').innerText=name;document.getElementById('chatImg').src=img;document.getElementById('mainPage').style.display='none';document.getElementById('chatView').style.display='flex';document.getElementById('messages').innerHTML='<div class="msg other">Salut '+name+'! 👋<br>Bienvenue sur Chat Ivoire 🇨🇮</div>'}
-function closeChat(){document.getElementById('chatView').style.display='none';document.getElementById('mainPage').style.display='flex';stopCamera()}
-function sendMsg(){
- const inp=document.getElementById('msgInput'); if(!inp.value.trim())return;
- const div=document.createElement('div'); div.className='msg me'; div.innerHTML=inp.value+'<div class="del" onclick="this.parentElement.remove()">✕</div>';
- div.onclick=()=>{if(confirm('Effacer ce message?'))div.remove()}
- document.getElementById('messages').appendChild(div); inp.value=''; document.getElementById('messages').scrollTop=9999;
-}
-function clearInput(){document.getElementById('msgInput').value=''; document.getElementById('msgInput').focus()}
-async function startCamera(){
- document.getElementById('cameraBox').style.display='flex';
- try{currentStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false}); document.getElementById('video').srcObject=currentStream;}catch(e){alert('Caméra non autorisée: '+e)}
-}
-function stopCamera(){if(currentStream){currentStream.getTracks().forEach(t=>t.stop())} document.getElementById('cameraBox').style.display='none'}
-function closeCamera(){stopCamera()}
-async function flipCamera(){facing=facing==='user'?'environment':'user'; if(currentStream){currentStream.getTracks().forEach(t=>t.stop())} startCamera()}
-function takePhoto(){
- const v=document.getElementById('video'); const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
- const img=c.toDataURL('image/jpeg'); stopCamera();
- const div=document.createElement('div'); div.className='msg me'; div.innerHTML='<img src="'+img+'"><div class="del" onclick="this.parentElement.remove()">✕</div>';
- div.onclick=()=>{if(confirm('Effacer cette photo?'))div.remove()}
- document.getElementById('messages').appendChild(div); document.getElementById('messages').scrollTop=9999;
-}
-function toggleDark(){document.body.classList.toggle('dark'); localStorage.setItem('dark',document.body.classList.contains('dark'))}
-if(localStorage.getItem('dark')=='true')document.body.classList.add('dark');
+function openChat(name,img){document.getElementById('chatName').innerText=name;document.getElementById('chatImg').src=img;document.getElementById('mainPage').style.display='none';document.getElementById('chatView').style.display='flex';document.getElementById('messages').innerHTML='<div class=msg other>Salut! C\'est '+name+' 👋</div>'; }
+function closeChat(){document.getElementById('chatView').style.display='none';document.getElementById('mainPage').style.display='flex';closeCamera()}
+function sendMsg(){let i=document.getElementById('msgInput');if(!i.value.trim())return;let d=document.createElement('div');d.className='msg me';d.innerText=i.value; d.onclick=function(){if(confirm('Effacer ce message?'))this.remove()}; document.getElementById('messages').appendChild(d); i.value=''; document.getElementById('messages').scrollTop=99999}
+function clearInput(){let i=document.getElementById('msgInput'); i.value=''; i.focus()}
+async function startCamera(){document.getElementById('cameraBox').style.display='flex';try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('video').srcObject=stream}catch(e){alert('Caméra bloquée: '+e)}}
+function closeCamera(){if(stream)stream.getTracks().forEach(t=>t.stop());document.getElementById('cameraBox').style.display='none'}
+async function flipCamera(){facing=facing==='user'?'environment':'user'; if(stream)stream.getTracks().forEach(t=>t.stop()); startCamera()}
+function takePhoto(){let v=document.getElementById('video');let c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let img=c.toDataURL('image/jpeg');closeCamera();let d=document.createElement('div');d.className='msg me';d.innerHTML='<img src="'+img+'" style="max-width:180px;border-radius:12px">';d.onclick=function(){if(confirm('Effacer cette photo?'))this.remove()};document.getElementById('messages').appendChild(d)}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('dark',document.body.classList.contains('dark')); document.getElementById('darkTxt').innerText=document.body.classList.contains('dark')?'ON':'OFF'}
+if(localStorage.getItem('dark')=='true')document.body.classList.add('dark');document.getElementById('darkTxt').innerText=localStorage.getItem('dark')=='true'?'ON':'OFF';
 </script>
 </body>
 </html>
