@@ -55,6 +55,9 @@ function supprimerDernierePhoto(){
 }
 function reprendreCamera(){
   location.reload();
+}function supprimerDernierePhoto(){
+  let imgs=document.querySelectorAll('img');
+  if(imgs.length>0){imgs[imgs.length-1].remove();alert('Photo supprimée!')}
 }
 </script>
 
