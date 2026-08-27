@@ -2,18 +2,22 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chat Ivoire</title>
+<title>Chat Ivoire - Le Facebook Ivoirien 🇨🇮</title>
 <style>
-:root{--bg:white;--text:black;--gray:#f0f2f5;--border:#eee;--orange:#ff8c00}
+:root{--bg:white;--text:black;--gray:#f0f2f5;--border:#eee;--orange:#ff8c00;--green:#009a44}
 body.dark{--bg:#121212;--text:white;--gray:#2a2a2a;--border:#333}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Helvetica,Arial,sans-serif}
 body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column}
+.viralBanner{background:linear-gradient(90deg,var(--orange),var(--green));color:white;padding:8px;text-align:center;font-weight:900;font-size:13px;animation:pulse 2s infinite}
+@keyframes pulse{0%{opacity:1}50%{opacity:.7}100%{opacity:1}}
 header{padding:12px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-header h1{color:var(--orange);font-size:24px;font-weight:900} header h1 span{color:#009a44}
+header h1{color:var(--orange);font-size:24px;font-weight:900} header h1 span{color:var(--green)}
+.shareViral{background:var(--gray);margin:10px;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;border:2px dashed var(--orange)}
+.shareBtn{background:#25D366;color:white;border:none;padding:10px 16px;border-radius:20px;font-weight:900;cursor:pointer}
 .tab{display:none;flex:1;overflow-y:auto;flex-direction:column} .tab.active{display:flex}
 .list{flex:1;overflow-y:auto}
-.chat{display:flex;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border)} .chat:active{background:var(--gray)}
-.chat img{width:52px;height:52px;border-radius:50%} .info{flex:1} .info p{color:#65676b;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat{display:flex;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border)}
+.chat img{width:52px;height:52px;border-radius:50%} .info{flex:1} .info p{color:#65676b;font-size:13px}
 .person{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--border)} .person img{width:50px;height:50px;border-radius:50%}
 #chatView{display:none;flex-direction:column;height:100vh;position:fixed;top:0;left:0;width:100%;background:var(--bg);z-index:50}
 .chatHeader{padding:10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
@@ -34,39 +38,45 @@ body.dark .messages{background:#0a0a0a}
 .camBtn{width:60px;height:60px;border-radius:50%;background:white;display:flex;justify-content:center;align-items:center;font-size:26px;cursor:pointer}
 nav{display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid var(--border);background:var(--bg)}
 nav div{text-align:center;color:#65676b;font-size:10px;cursor:pointer;padding:4px 12px;border-radius:10px} nav div.active{color:var(--orange);background:#fff3e6} body.dark nav div.active{background:#3a2a00} nav div span{font-size:20px;display:block}
-.menu-item{padding:16px;display:flex;gap:15px;border-bottom:1px solid var(--border);cursor:pointer} .menu-item:active{background:var(--gray)}
+.menu-item{padding:16px;display:flex;gap:15px;border-bottom:1px solid var(--border);cursor:pointer}
 </style>
 </head>
 <body>
-<div id="mainPage" style="display:flex;flex-direction:column;height:100vh;flex:1">
-<header><h1>chat<span>ivoire</span></h1><div>✏️</div></header>
+<div class="viralBanner">🔥 <span id="count">1,247</span> Ivoiriens en ligne • 🇨🇮 100% CI • Enjaillééé!</div>
+<div id="mainPage" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+<header><h1>chat<span>ivoire</span></h1><div>🇨🇮</div></header>
 
-<div id="tab-discussions" class="tab active"><div class="list">
-<div class="chat" onclick="openChat('Rosy Yao','https://i.pravatar.cc/100?img=10')"><img src="https://i.pravatar.cc/100?img=10"><div class="info"><b>Rosy Yao</b><p>Vous: Joyeux anniversaire 🎉</p></div></div>
-<div class="chat" onclick="openChat('Edwige N\'goran','https://i.pravatar.cc/100?img=11')"><img src="https://i.pravatar.cc/100?img=11"><div class="info"><b>Edwige N'goran</b><p>Vidéo BOIS...</p></div></div>
-<div class="chat" onclick="openChat('Grâce Douhe','https://i.pravatar.cc/100?img=12')"><img src="https://i.pravatar.cc/100?img=12"><div class="info"><b>Grâce Douhe</b><p>A la maison et toi</p></div></div>
+<div id="tab-discussions" class="tab active">
+<div class="shareViral">
+<div style="flex:1"><b>📲 Deviens viral!</b><br><small>Invite tes amis, gagne le badge LÉGENDE 🇨🇮</small></div>
+<button class="shareBtn" onclick="shareWhatsApp()">WhatsApp</button>
+</div>
+<div class="list">
+<div class="chat" onclick="openChat('Rosy Yao','https://i.pravatar.cc/100?img=10')"><img src="https://i.pravatar.cc/100?img=10"><div class="info"><b>Rosy Yao 🇨🇮</b><p>Vous: Joyeux anniversaire 🎉 - En ligne</p></div><small style="color:var(--green)">●</small></div>
+<div class="chat" onclick="openChat('Edwige N\'goran','https://i.pravatar.cc/100?img=11')"><img src="https://i.pravatar.cc/100?img=11"><div class="info"><b>Edwige N'goran</b><p>Regarde mon statut 😍</p></div></div>
+<div class="chat" onclick="openChat('Squad Yopougon 💪','https://i.pravatar.cc/100?img=20')"><img src="https://i.pravatar.cc/100?img=20"><div class="info"><b>Squad Yopougon 💪 (8)</b><p>Koffi: On sort ce soir?</p></div></div>
 </div></div>
 
 <div id="tab-personnes" class="tab"><div class="list">
-<div class="person"><img src="https://i.pravatar.cc/100?img=2"><div><b>Daniel Koné</b><p style="color:#65676b;font-size:12px">En ligne</p></div></div>
-<div class="person"><img src="https://i.pravatar.cc/100?img=3"><div><b>Koffi Gérard</b><p style="color:#65676b;font-size:12px">Actif il y a 2 min</p></div></div>
-<div class="person"><img src="https://i.pravatar.cc/100?img=10"><div><b>Rosy Yao</b><p style="color:#65676b;font-size:12px">En ligne</p></div></div>
+<div class="person"><img src="https://i.pravatar.cc/100?img=2"><div><b>Daniel Koné • Cocody</b><p style="color:var(--green);font-size:12px">● Enjaillé</p></div><button class="shareBtn" style="margin-left:auto;padding:6px 10px;font-size:12px" onclick="openChat('Daniel Koné','https://i.pravatar.cc/100?img=2')">Chat</button></div>
+<div class="person"><img src="https://i.pravatar.cc/100?img=3"><div><b>Koffi Gérard • Yop</b><p style="color:var(--green);font-size:12px">● En ligne</p></div><button class="shareBtn" style="margin-left:auto;padding:6px 10px;font-size:12px" onclick="openChat('Koffi Gérard','https://i.pravatar.cc/100?img=3')">Chat</button></div>
 </div></div>
 
-<div id="tab-notifs" class="tab"><div style="padding:15px"><h3>🔔 Notifications</h3><p style="margin-top:12px;background:var(--gray);padding:12px;border-radius:10px">💬 <b>Edwige</b> a réagi 😍<br><small>Il y a 5 min</small></p><p style="margin-top:10px;background:var(--gray);padding:12px;border-radius:10px">👥 <b>Daniel</b> t'a ajouté<br><small>Il y a 1h</small></p></div></div>
+<div id="tab-notifs" class="tab"><div style="padding:15px"><h3>🔔 Notifications</h3><p style="margin-top:12px;background:var(--gray);padding:12px;border-radius:10px">🔥 Tu es dans le <b>Top 10 Ivoirien</b> aujourd'hui!<br><small>Continue d'inviter</small></p><p style="margin-top:10px;background:var(--gray);padding:12px;border-radius:10px">👀 <b>3 personnes</b> ont vu ton profil</p></div></div>
 
-<div id="tab-menu" class="tab"><div style="padding:20px;text-align:center"><img src="https://i.pravatar.cc/100?img=1" style="width:80px;height:80px;border-radius:50%"><h3>Jeff Bezos</h3><p style="color:#65676b">Voir profil</p></div>
+<div id="tab-menu" class="tab"><div style="padding:20px;text-align:center"><img src="https://i.pravatar.cc/100?img=1" style="width:80px;height:80px;border-radius:50%;border:3px solid var(--orange)"><h3>Jeff Bezos 🇨🇮</h3><p style="background:var(--orange);color:white;display:inline-block;padding:3px 10px;border-radius:10px;font-size:12px;margin-top:5px">👑 FONDATEUR</p><p style="color:#65676b;margin-top:5px">Fondateur de Chat Ivoire</p>
+<button class="shareBtn" style="margin-top:12px;width:100%" onclick="shareWhatsApp()">📲 INVITER MES AMIS DEVENIR VIRAL</button>
+</div>
 <div class="menu-item" onclick="toggleDark()"><span>🌙</span> Mode sombre <span id="darkTxt" style="margin-left:auto;color:#ff8c00"></span></div>
-<div class="menu-item" onclick="alert('⚙️ Paramètres: Langue Français 🇨🇮')"><span>⚙️</span> Paramètres</div>
-<div class="menu-item" onclick="alert('🔒 Messages chiffrés, serveur CI 🇨🇮')"><span>🔒</span> Confidentialité</div>
-<div class="menu-item" onclick="if(confirm('Se déconnecter?'))location.reload()"><span>🚪</span> Déconnexion</div>
+<div class="menu-item"><span>🏆</span> Classement Ivoirien <span style="margin-left:auto">Top #1</span></div>
+<div class="menu-item" onclick="alert('🔒 100% Ivoirien, serveurs à Abidjan')"><span>🔒</span> 100% Ivoirien</div>
 </div>
 
 <nav>
-<div class="active" id="b1" onclick="showTab('discussions',this)"><span>💬</span>Discussions</div>
-<div id="b2" onclick="showTab('personnes',this)"><span>👥</span>Personnes</div>
-<div id="b3" onclick="showTab('notifs',this)"><span>🔔</span>Notifs</div>
-<div id="b4" onclick="showTab('menu',this)"><span>☰</span>Menu</div>
+<div class="active" onclick="showTab('discussions',this)"><span>💬</span>Discussions</div>
+<div onclick="showTab('personnes',this)"><span>👥</span>Personnes</div>
+<div onclick="showTab('notifs',this)"><span>🔔</span>Notifs</div>
+<div onclick="showTab('menu',this)"><span>☰</span>Menu</div>
 </nav>
 </div>
 
@@ -81,16 +91,18 @@ nav div{text-align:center;color:#65676b;font-size:10px;cursor:pointer;padding:4p
 <script>
 let stream=null,facing='user';
 function showTab(n,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');document.querySelectorAll('nav div').forEach(b=>b.classList.remove('active'));el.classList.add('active')}
-function openChat(name,img){document.getElementById('chatName').innerText=name;document.getElementById('chatImg').src=img;document.getElementById('mainPage').style.display='none';document.getElementById('chatView').style.display='flex';document.getElementById('messages').innerHTML='<div class=msg other>Salut! C\'est '+name+' 👋</div>'; }
+function openChat(name,img){document.getElementById('chatName').innerText=name;document.getElementById('chatImg').src=img;document.getElementById('mainPage').style.display='none';document.getElementById('chatView').style.display='flex';document.getElementById('messages').innerHTML='<div class=msg other>Salut! C\'est '+name+' 🇨🇮 On est ensemble!</div>'; }
 function closeChat(){document.getElementById('chatView').style.display='none';document.getElementById('mainPage').style.display='flex';closeCamera()}
 function sendMsg(){let i=document.getElementById('msgInput');if(!i.value.trim())return;let d=document.createElement('div');d.className='msg me';d.innerText=i.value; d.onclick=function(){if(confirm('Effacer ce message?'))this.remove()}; document.getElementById('messages').appendChild(d); i.value=''; document.getElementById('messages').scrollTop=99999}
-function clearInput(){let i=document.getElementById('msgInput'); i.value=''; i.focus()}
-async function startCamera(){document.getElementById('cameraBox').style.display='flex';try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('video').srcObject=stream}catch(e){alert('Caméra bloquée: '+e)}}
+function clearInput(){document.getElementById('msgInput').value='';}
+async function startCamera(){document.getElementById('cameraBox').style.display='flex';try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('video').srcObject=stream}catch(e){alert('Caméra: '+e)}}
 function closeCamera(){if(stream)stream.getTracks().forEach(t=>t.stop());document.getElementById('cameraBox').style.display='none'}
 async function flipCamera(){facing=facing==='user'?'environment':'user'; if(stream)stream.getTracks().forEach(t=>t.stop()); startCamera()}
-function takePhoto(){let v=document.getElementById('video');let c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let img=c.toDataURL('image/jpeg');closeCamera();let d=document.createElement('div');d.className='msg me';d.innerHTML='<img src="'+img+'" style="max-width:180px;border-radius:12px">';d.onclick=function(){if(confirm('Effacer cette photo?'))this.remove()};document.getElementById('messages').appendChild(d)}
-function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('dark',document.body.classList.contains('dark')); document.getElementById('darkTxt').innerText=document.body.classList.contains('dark')?'ON':'OFF'}
-if(localStorage.getItem('dark')=='true')document.body.classList.add('dark');document.getElementById('darkTxt').innerText=localStorage.getItem('dark')=='true'?'ON':'OFF';
+function takePhoto(){let v=document.getElementById('video');let c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let img=c.toDataURL('image/jpeg');closeCamera();let d=document.createElement('div');d.className='msg me';d.innerHTML='<img src="'+img+'">';d.onclick=function(){if(confirm('Effacer photo?'))this.remove()};document.getElementById('messages').appendChild(d)}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('dark',document.body.classList.contains('dark'))}
+function shareWhatsApp(){let text=encodeURIComponent("🔥 J'ai trouvé CHAT IVOIRE 🇨🇮 Le Facebook Ivoirien! Viens on chat ensemble: https://chat-ivoire.onrender.com - 100% Ivoirien!"); window.open("https://wa.me/?text="+text,"_blank")}
+setInterval(()=>{let c=document.getElementById('count'); let n=parseInt(c.innerText.replace(',',''))+Math.floor(Math.random()*3); c.innerText=n.toLocaleString()},3000)
+if(localStorage.getItem('dark')=='true')document.body.classList.add('dark');
 </script>
 </body>
 </html>
