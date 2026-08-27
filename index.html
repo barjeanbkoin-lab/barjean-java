@@ -62,12 +62,18 @@ function supprimerDernierePhoto(){
  location.reload();
 }
 
-let chat=document.getElementById('chat');
-if(chat && chat.lastElementChild){
-chat.lastElementChild.remove();
-alert('Photo supprimée!');
+
+
+function supprimerDernierePhoto(){
+  document.querySelectorAll('img').forEach(e=>e.remove());
+  localStorage.clear();
+  sessionStorage.clear();
+  let c=document.getElementById('chat'); if(c) c.innerHTML='';
+  alert('✅ EFFACÉ!');
+  location.reload();
 }
-}
+
+
 </script>
 
 <button onclick="supprimerDernierePhoto()" style="background:black;color:white;padding:12px;width:100%;border-radius:10px;margin-top:10px;font-weight:bold">🗑️ SUPPRIMER MAUVAISE PHOTO</button>
