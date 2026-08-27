@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Ivoire CI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial;background:#fff}
+.header{padding:12px;color:#0084ff;font-weight:bold;font-size:22px;border-bottom:1px solid #eee}
+.search{margin:10px;background:#f0f2f5;padding:10px;border-radius:20px;color:#888}
+.stories{display:flex;gap:10px;padding:10px;overflow-x:auto}
+.story{text-align:center;min-width:60px}.story img{width:55px;height:55px;border-radius:50%;border:3px solid #0084ff}
+.page{display:none;padding:10px;padding-bottom:80px}.page.active{display:block}
+.msg{display:flex;gap:10px;padding:10px;border-bottom:1px solid #f5f5f5}.msg img{width:45px;height:45px;border-radius:50%}
+.bottom{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid #ddd;padding:8px 0}
+.bottom div{flex:1;text-align:center;font-size:12px;cursor:pointer;color:#888}.bottom div.active{color:#0084ff;font-weight:bold}
+#cameraModal{position:fixed;top:0;left:0;right:0;bottom:0;background:#000;display:none;flex-direction:column;z-index:999}
+#video{flex:1;width:100%}.cam-btn{padding:15px;display:flex;justify-content:space-around;background:#222}
+.cam-btn button{padding:10px 20px;border-radius:20px;border:none;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="header">messenger <span style="float:right" onclick="openCam()">📷</span></div>
+<div class="search">Demandez à Meta AI ou faites une recherche</div>
+<div class="stories">
+<div class="story"><img src="https://i.pravatar.cc/100?img=1"><br>Créer</div>
+<div class="story"><img src="https://i.pravatar.cc/100?img=2"><br>Vanessa</div>
+<div class="story"><img src="https://i.pravatar.cc/100?img=3"><br>Traoré</div>
+</div>
+<div id="p-discussions" class="page active">
+<div class="msg"><img src="https://i.pravatar.cc/100?img=5"><div><b>Grace Douhe</b><br>Vous: A la maison ?</div></div>
+<div class="msg"><img src="https://i.pravatar.cc/100?img=6"><div><b>Edwige Ngoran</b><br>Découvre la vidéo</div></div>
+</div>
+<div id="p-personnes" class="page"><h3>Personnes en ligne</h3><div class="msg"><img src="https://i.pravatar.cc/100?img=8"><div><b>Severin</b><br>En ligne</div></div></div>
+<div id="p-notifications" class="page"><h3>Notifications</h3><p>🔔 Vanessa a aimé ton message</p></div>
+<div id="p-menu" class="page"><h3>Menu</h3><p>👤 Profil: JEFF BARJEAN</p><br><button onclick="openCam()" style="padding:10px;background:#0084ff;color:#fff;border:none;border-radius:10px">Ouvrir Caméra</button></div>
+<div id="cameraModal"><video id="video" autoplay playsinline></video><div class="cam-btn"><button onclick="switchCam()">🔄 Avant/Arrière</button><button onclick="takePhoto()" style="background:#0084ff;color:white">📸 Photo</button><button onclick="closeCam()" style="background:red;color:white">X Fermer</button></div><canvas id="canvas" style="display:none"></canvas></div>
+<div class="bottom">
+<div id="b-discussions" class="active" onclick="showPage('discussions')">💬<br>Discussions</div>
+<div id="b-personnes" onclick="showPage('personnes')">👥<br>Personnes</div>
+<div id="b-notifications" onclick="showPage('notifications')">🔔<br>Notifications</div>
+<div id="b-menu" onclick="showPage('menu')">☰<br>Menu</div>
+</div>
+<script>
+let currentFacing="user";let stream=null;
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.bottom div').forEach(b=>b.classList.remove('active'));document.getElementById('p-'+name).classList.add('active');document.getElementById('b-'+name).classList.add('active');}
+async function openCam(){document.getElementById('cameraModal').style.display='flex';try{if(stream)stream.getTracks().forEach(t=>t.stop());stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:currentFacing}});document.getElementById('video').srcObject=stream;}catch(e){alert('Autorise la caméra');}}
+function closeCam(){document.getElementById('cameraModal').style.display='none';if(stream)stream.getTracks().forEach(t=>t.stop());}
+async function switchCam(){currentFacing=currentFacing==="user"?"environment":"user";openCam();}
+function takePhoto(){const v=document.getElementById('video');const c=document.getElementById('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);const img=c.toDataURL('image/png');closeCam();const div=document.createElement('div');div.className='msg';div.innerHTML=`<img src="${img}"><div><b>Vous</b><br>Photo 📸</div>`;document.getElementById('p-discussions').prepend(div);showPage('discussions');}
+</script>
+</body>
+</html>
