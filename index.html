@@ -1,0 +1,6 @@
+<!DOCTYPE html><html><body>
+<style>.p{display:none}.on{display:block}.b{position:fixed;bottom:0;display:flex;width:100%;background:#fff;border-top:1px solid #ddd;padding:10px 0}.b div{flex:1;text-align:center}</style>
+<div id="d" class="p on">Discussions</div><div id="p2" class="p">Personnes</div><div id="n" class="p">Notifs</div><div id="me" class="p">Menu</div>
+<div class="b"><div onclick="show('d')">Discussions</div><div onclick="show('p2')">Personnes</div><div onclick="show('n')">Notifs</div><div onclick="show('me')">Menu</div></div>
+<script>function show(x){document.querySelectorAll('.p').forEach(p=>p.classList.remove('on'));document.getElementById(x).classList.add('on');}</script>
+</body></html>
