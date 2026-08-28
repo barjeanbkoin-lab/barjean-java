@@ -1,40 +1,68 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <style>
-body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{position:fixed;top:0;left:0;right:0;background:#fff;padding:12px;font-weight:bold;border-bottom:1px solid #ddd;z-index:10}
-.content{padding:60px 10px 70px 10px}
-.card{background:#fff;padding:12px;border-radius:8px;margin:8px 0;display:flex;align-items:center}
-.bot{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid #ddd}
-.bot div{flex:1;text-align:center;padding:12px;font-size:14px}
-video{width:100%;border-radius:10px}
-button{background:#0084ff;color:#fff;border:0;padding:10px 18px;border-radius:20px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#fff}
+.top{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:12px 14px;border-bottom:1px solid #e9edef;position:fixed;top:0;left:0;right:0;z-index:10}
+.top b{color:#25D366;font-size:22px}
+.content{padding:55px 0 70px 0}
+.row{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid #f5f5f5}
+.row img,.avatar{width:48px;height:48px;border-radius:50%;background:#ddd;margin-right:12px;object-fit:cover;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold}
+.row .txt{flex:1}
+.row .txt b{font-size:15px}
+.row .txt small{color:#667781;font-size:13px}
+.time{font-size:12px;color:#667781}
+.badge{background:#25D366;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.bot{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #e9edef}
+.bot div{flex:1;text-align:center;padding:8px 0;font-size:11px;color:#667781}
+.bot div.active{color:#000;font-weight:bold}
+.bot div span{font-size:22px;display:block}
+.fab{position:fixed;bottom:85px;right:16px;background:#25D366;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;box-shadow:0 2px 5px rgba(0,0,0,0.3)}
+video{width:100%;height:70vh;object-fit:cover;background:#000}
+.camBar{display:flex;justify-content:space-around;padding:10px;background:#111;color:#fff}
+.camBar button{padding:8px 16px;border-radius:20px;border:0;background:#25D366;color:#fff}
 </style></head>
 <body>
-<div class="top" id="title">Discussions</div>
+
+<div class="top"><b>WhatsApp</b><div><span onclick="openCam()" style="font-size:22px;margin-right:16px">📷</span><span style="font-size:22px">⋮</span></div></div>
 
 <div id="d" class="content">
-<div class="card"><div style="width:40px;height:40px;background:#0084ff;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:10px">G</div><div><b>Grace Beya</b><br><small>En ligne - Salut JEFF!</small></div></div>
-<div class="card"><div style="width:40px;height:40px;background:#ccc;border-radius:50%;margin-right:10px"></div><div><b>Maman</b><br><small>Appel hier</small></div></div>
-<button onclick="document.getElementById('camBox').style.display='block';startCam()">📷 Ouvrir Caméra</button>
-<div id="camBox" style="display:none;margin-top:10px"><video id="v" autoplay></video><br><button onclick="stopCam()">Fermer</button></div>
+<div class="row"><div class="avatar" style="background:#8b5cf6">M</div><div class="txt"><b>Meta AI</b><br><small>WOOOOOW JEFF!!! 🎉🎉🎉 ÇA...</small></div><div><div class="time">09:21</div></div></div>
+<div class="row"><div class="avatar" style="background:#fff;border:1px solid #ddd">🌿</div><div class="txt"><b>Olylife, santé pour tous</b><br><small>~ LE VISIONNER: Sticker</small></div><div><div class="time" style="color:#25D366">08:00</div><div class="badge">3</div></div></div>
+<div class="row" onclick="alert('Chat avec Séverine')"><img src="https://i.pravatar.cc/100?img=5"><div class="txt"><b>Kouamé Séverine</b><br><small>Bonsoir homme comment tu va...</small></div><div class="time">Hier</div></div>
+<div class="row"><div class="avatar" style="background:#000;color:#ff0">2023</div><div class="txt"><b>Famille KLANDJIN</b><br><small>~ noel Aka: POUR TA SANTÉ LIR...</small></div><div class="time">Hier</div></div>
+<div class="row"><img src="https://i.pravatar.cc/100?img=12"><div class="txt"><b>Viande de brousse locale</b><br><small>~ Desiree Bahou: 12000fr Bi...</small></div><div class="time">Hier</div></div>
+<div class="row"><img src="https://i.pravatar.cc/100?img=15"><div class="txt"><b>+225 0747136604</b><br><small style="color:#53bdeb">✓✓ 0103829528 thebi</small></div><div class="time">Hier</div></div>
+<div class="row"><div class="avatar" style="background:#fff">🌈</div><div class="txt"><b>ESPACE N'GOHINOU</b><br><small>~ akesseoiakesse: On verse l''</small></div><div class="time">Hier</div></div>
 </div>
 
-<div id="p2" class="content" style="display:none"><div class="card">Personnes - 2 amis en ligne</div></div>
-<div id="n" class="content" style="display:none"><div class="card">🔔 Notifications - Pas de nouvelle notif</div></div>
-<div id="me" class="content" style="display:none"><div class="card">☰ Menu - JEFF Barjean<br>barjean@gmail.com</div></div>
+<div id="actus" class="content" style="display:none">
+<div class="row"><div class="avatar" style="background:#25D366">✓</div><div class="txt"><b>Actus</b><br><small>Partage tes moments</small></div></div>
+<div style="padding:14px"><b>Astuces WhatsApp:</b><br><br>• Appuie long sur un chat pour l'épingler<br>• Balaye vers gauche pour répondre<br>• Double-clic pour liker<br>• Caméra: bouton pour changer avant/arrière marche!</div>
+</div>
+
+<div id="com" class="content" style="display:none"><div class="row"><div class="avatar" style="background:#aaa">👥</div><div class="txt"><b>Communautés</b><br><small>2 groupes - Viande, Famille KLANDJIN</small></div></div></div>
+
+<div id="appels" class="content" style="display:none"><div class="row"><div class="avatar" style="background:#25D366">📞</div><div class="txt"><b>Créer un lien d'appel</b><br><small>Partage un lien pour ton appel WhatsApp</small></div></div><div class="row"><img src="https://i.pravatar.cc/100?img=5"><div class="txt"><b>Aidé Soignante Scanner</b><br><small>↙ Appel vidéo Hier</small></div></div></div>
+
+<div id="camPage" class="content" style="display:none;padding-top:55px"><video id="v" autoplay playsinline></video><div class="camBar"><button onclick="switchCam()">🔄 Arrière/Avant</button><button onclick="closeCam()">Fermer</button><button onclick="takePic()">📸 Photo</button></div><canvas id="c" style="display:none"></canvas></div>
 
 <div class="bot">
-<div onclick="go('d','Discussions')">💬<br>Discussions</div>
-<div onclick="go('p2','Personnes')">👥<br>Personnes</div>
-<div onclick="go('n','Notifs')">🔔<br>Notifs</div>
-<div onclick="go('me','Menu')">☰<br>Menu</div>
+<div id="b1" class="active" onclick="go('d','b1')"><span>💬</span>Discussions</div>
+<div id="b2" onclick="go('actus','b2')"><span>⭕</span>Actus</div>
+<div id="b3" onclick="go('com','b3')"><span>👥</span>Communautés</div>
+<div id="b4" onclick="go('appels','b4')"><span>📞</span>Appels</div>
 </div>
 
+<div class="fab" onclick="alert('Nouveau message')">+</div>
+
 <script>
-function go(id,t){document.getElementById('d').style.display='none';document.getElementById('p2').style.display='none';document.getElementById('n').style.display='none';document.getElementById('me').style.display='none';document.getElementById(id).style.display='block';document.getElementById('title').innerText=t}
-let stream=null;
-async function startCam(){try{stream=await navigator.mediaDevices.getUserMedia({video:true});document.getElementById('v').srcObject=stream}catch(e){alert('Caméra bloquée, autorise dans le navigateur')}} 
-function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop())}document.getElementById('camBox').style.display='none'}
+let cur='d';let facing='user';let stream=null;
+function go(id,btn){document.getElementById(cur).style.display='none';if(document.getElementById('camPage'))document.getElementById('camPage').style.display='none';document.getElementById(id).style.display='block';cur=id;document.querySelectorAll('.bot div').forEach(b=>b.classList.remove('active'));document.getElementById(btn).classList.add('active');if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+async function openCam(){document.getElementById(cur).style.display='none';document.getElementById('camPage').style.display='block';cur='camPage';startCam()}
+function closeCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}document.getElementById('camPage').style.display='none';document.getElementById('d').style.display='block';cur='d';document.querySelectorAll('.bot div').forEach(b=>b.classList.remove('active'));document.getElementById('b1').classList.add('active')}
+async function startCam(){if(stream){stream.getTracks().forEach(t=>t.stop())}try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('v').srcObject=stream}catch(e){alert('Autorise la caméra dans ton navigateur')}}
+function switchCam(){facing=facing==='user'?'environment':'user';startCam()}
+function takePic(){let v=document.getElementById('v');let c=document.getElementById('c');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let a=document.createElement('a');a.download='whatsapp_photo.jpg';a.href=c.toDataURL();a.click();alert('Photo enregistrée!')}
 </script>
 </body></html>
