@@ -28,17 +28,21 @@ body{background:#fff;overflow:hidden}
 #inputBar{display:flex;align-items:center;padding:8px;background:#fff;gap:6px}
 #inputBar input{flex:1;padding:12px;border-radius:25px;border:1px solid #ddd;outline:none}
 #inputBar button{background:#FF8C00;color:#fff;border:0;width:42px;height:42px;border-radius:50%;font-size:18px}
-#camView{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column}
+#camView{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:300;display:none;flex-direction:column;justify-content:center;align-items:center;padding:20px}
 #camView.active{display:flex}
-#video{flex:1;object-fit:cover;width:100%}
-.camCtrl{display:flex;justify-content:space-around;padding:20px;background:#000;align-items:center}
-.camCtrl button{padding:12px 18px;border-radius:25px;border:0;font-weight:bold}
+#video{width:100%;max-width:400px;height:60vh;object-fit:cover;border-radius:20px;background:#000}
+.camCtrl{display:flex;justify-content:center;gap:20px;padding:20px;align-items:center;margin-top:15px}
+.camCtrl button{padding:12px 18px;border-radius:25px;border:0;font-weight:bold;cursor:pointer}
+@media(max-width:600px){
+#camView{padding:0;background:#000}
+#video{max-width:100%;height:100vh;border-radius:0}
+}
 </style>
 </head>
 <body>
 <div class="top"><b>Chat Ivoire 🧡</b><span>⋮</span></div>
 <div id="p-disc" class="page active"></div>
-<div id="p-actus" class="page"><div style="padding:40px;text-align:center;color:#999">⭕ Actus bientôt</div></div>
+<div id="p-actus" class="page"><div style="padding:40px;text-align:center;color:#999">⭕ Actus</div></div>
 <div id="p-comm" class="page"><div style="padding:40px;text-align:center;color:#999">👥 Communautés</div></div>
 <div id="p-appels" class="page"><div style="padding:40px;text-align:center;color:#999">📞 Appels</div></div>
 
@@ -58,7 +62,7 @@ body{background:#fff;overflow:hidden}
 <div class="camCtrl">
 <button onclick="switchCam()" style="background:#444;color:#fff">🔄 Avant/Arrière</button>
 <button onclick="takePic()" style="background:#FF8C00;color:#fff;width:70px;height:70px;border-radius:50%;font-size:30px">📸</button>
-<button onclick="closeCam()" style="background:#fff;color:#000">✕ Fermer</button>
+<button onclick="closeCam()" style="background:#fff;color:#000">✕</button>
 </div>
 </div>
 
@@ -70,8 +74,8 @@ body{background:#fff;overflow:hidden}
 </div>
 
 <script>
-const contacts=[{name:"Séverine",img:"https://i.pravatar.cc/100?img=5",msg:"Salut Jeff!"},{name:"Maman",img:"https://i.pravatar.cc/100?img=26",msg:"Bravo mon fils!"},{name:"Koffi",img:"https://i.pravatar.cc/100?img=12",msg:"On teste ce soir?"},{name:"Fatou",img:"https://i.pravatar.cc/100?img=23",msg:"J'ai installé!"},{name:"Team Abidjan",img:"https://i.pravatar.cc/100?img=33",msg:"🔥 Bravo!"},{name:"Joel",img:"https://i.pravatar.cc/100?img=15",msg:"Top!"}];
-let cur=null, stream=null, facing="environment";
+const contacts=[{name:"Séverine",img:"https://i.pravatar.cc/100?img=5",msg:"Salut!"},{name:"Maman",img:"https://i.pravatar.cc/100?img=26",msg:"Bravo!"},{name:"Koffi",img:"https://i.pravatar.cc/100?img=12",msg:"On teste?"},{name:"Fatou",img:"https://i.pravatar.cc/100?img=23",msg:"Installé!"},{name:"Team Abidjan",img:"https://i.pravatar.cc/100?img=33",msg:"🔥"},{name:"Joel",img:"https://i.pravatar.cc/100?img=15",msg:"Top!"}];
+let cur=null,stream=null,facing="environment";
 function render(){const d=document.getElementById('p-disc');d.innerHTML='';contacts.forEach((c,i)=>{d.innerHTML+=`<div class="chat-item" onclick="openC(${i})"><img src="${c.img}"><div><b>${c.name}</b><br><small style="color:#666">${c.msg}</small></div></div>`});}
 function showP(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bot button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function openC(i){cur=i;document.getElementById('conv').classList.add('active');document.getElementById('cName').textContent=contacts[i].name;document.getElementById('cImg').src=contacts[i].img;document.getElementById('msgs').innerHTML=`<div class="bubble you">${contacts[i].msg}</div>`;}
@@ -79,10 +83,10 @@ function closeC(){document.getElementById('conv').classList.remove('active');}
 function send(){const v=document.getElementById('t').value;if(!v)return;document.getElementById('msgs').innerHTML+=`<div class="bubble me">${v}</div>`;contacts[cur].msg=v;document.getElementById('t').value='';render();}
 function sendFile(inp){if(inp.files[0]){const url=URL.createObjectURL(inp.files[0]);const isV=inp.files[0].type.startsWith('video');document.getElementById('msgs').innerHTML+=`<div class="bubble me">${isV?`<video src="${url}" controls style="max-width:180px;border-radius:10px"></video>`:`<img src="${url}" style="max-width:180px;border-radius:10px">`}</div>`;}}
 async function openCam(){document.getElementById('camView').classList.add('active');startCam();}
-async function startCam(){if(stream)stream.getTracks().forEach(t=>t.stop());try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('video').srcObject=stream;}catch(e){alert("Autorise la caméra!");}}
+async function startCam(){if(stream)stream.getTracks().forEach(t=>t.stop());try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('video').srcObject=stream;}catch(e){alert("Autorise caméra");}}
 function switchCam(){facing=facing==="environment"?"user":"environment";startCam();}
 function closeCam(){document.getElementById('camView').classList.remove('active');if(stream)stream.getTracks().forEach(t=>t.stop());}
-function takePic(){const v=document.getElementById('video');const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);const url=c.toDataURL('image/jpeg');document.getElementById('msgs').innerHTML+=`<div class="bubble me"><img src="${url}" style="max-width:180px;border-radius:10px"></div>`;closeCam();openC(cur);}
+function takePic(){const v=document.getElementById('video');const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);const url=c.toDataURL('image/jpeg');document.getElementById('msgs').innerHTML+=`<div class="bubble me"><img src="${url}" style="max-width:180px;border-radius:10px"></div>`;closeCam();}
 render();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
 </script>
