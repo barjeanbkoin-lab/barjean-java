@@ -7,15 +7,13 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#FF8C00">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#fff;overflow:hidden}
 .top{position:fixed;top:0;left:0;right:0;height:55px;background:#FF8C00;display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:100;color:#fff}
 .top b{font-size:20px}
 .page{display:none;height:100vh;padding-top:55px;padding-bottom:70px;overflow-y:auto}.page.active{display:block}
 .chat-item{display:flex;align-items:center;padding:12px 15px;border-bottom:1px solid #f5f5f5;cursor:pointer}
-.chat-item:active{background:#FFF3E0}
-.chat-item img{width:52px;height:52px;border-radius:50%;margin-right:13px;object-fit:cover}
-.chat-item.n{font-weight:bold;font-size:15px}.chat-item.m{color:#666;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.chat-item img{width:52px;height:52px;border-radius:50%;margin-right:13px}
 .bot{position:fixed;bottom:0;left:0;right:0;height:65px;background:#fff;border-top:2px solid #FF8C00;display:flex;z-index:100}
 .bot button{flex:1;border:0;background:#fff;font-size:11px;color:#777;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
 .bot button.active{color:#FF8C00;border-top:3px solid #FF8C00;font-weight:bold}
@@ -27,23 +25,41 @@ body{background:#fff;overflow:hidden}
 .bubble{max-width:75%;padding:8px 12px;border-radius:12px;font-size:14px}
 .me{align-self:flex-end;background:#FF8C00;color:#fff;border-bottom-right-radius:2px}
 .you{align-self:flex-start;background:#fff;border-bottom-left-radius:2px}
-#inputBar{display:flex;padding:8px;background:#fff;gap:8px}
+#inputBar{display:flex;align-items:center;padding:8px;background:#fff;gap:6px}
 #inputBar input{flex:1;padding:12px;border-radius:25px;border:1px solid #ddd;outline:none}
-#inputBar button{background:#FF8C00;color:#fff;border:0;width:45px;height:45px;border-radius:50%;font-size:20px}
+#inputBar button{background:#FF8C00;color:#fff;border:0;width:42px;height:42px;border-radius:50%;font-size:18px}
+#camView{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column}
+#camView.active{display:flex}
+#video{flex:1;object-fit:cover;width:100%}
+.camCtrl{display:flex;justify-content:space-around;padding:20px;background:#000;align-items:center}
+.camCtrl button{padding:12px 18px;border-radius:25px;border:0;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="top"><b>Chat Ivoire 🧡</b><span>⋮</span></div>
-
 <div id="p-disc" class="page active"></div>
-<div id="p-actus" class="page"><div style="padding:20px;text-align:center;color:#999;margin-top:50px">⭕<br><br>Statuts<br><small style="color:#666">Tes actus apparaîtront ici</small></div></div>
-<div id="p-comm" class="page"><div style="padding:20px;text-align:center;color:#999;margin-top:50px">👥<br><br>Communautés<br><small>Groupes d'Abidjan</small></div></div>
-<div id="p-appels" class="page"><div style="padding:20px;text-align:center;color:#999;margin-top:50px">📞<br><br>Appels<br><small>Historique d'appels</small></div></div>
+<div id="p-actus" class="page"><div style="padding:40px;text-align:center;color:#999">⭕ Actus bientôt</div></div>
+<div id="p-comm" class="page"><div style="padding:40px;text-align:center;color:#999">👥 Communautés</div></div>
+<div id="p-appels" class="page"><div style="padding:40px;text-align:center;color:#999">📞 Appels</div></div>
 
 <div id="conv">
-<div id="convHead"><span onclick="closeC()" style="font-size:24px;cursor:pointer">←</span><img id="cImg" src="" style="width:40px;height:40px;border-radius:50%"><b id="cName"></b></div>
+<div id="convHead"><span onclick="closeC()" style="font-size:24px;cursor:pointer">←</span><img id="cImg" src="" style="width:40px;height:40px;border-radius:50%"><b id="cName"></b><span style="margin-left:auto" onclick="openCam()">📷</span></div>
 <div id="msgs"></div>
-<div id="inputBar"><input id="t" placeholder="Message"><button onclick="send()">➤</button></div>
+<div id="inputBar">
+<button onclick="openCam()">📷</button>
+<label style="background:#FF8C00;color:#fff;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">🖼️<input type="file" accept="image/*,video/*" style="display:none" onchange="sendFile(this)"></label>
+<input id="t" placeholder="Message">
+<button onclick="send()">➤</button>
+</div>
+</div>
+
+<div id="camView">
+<video id="video" autoplay playsinline></video>
+<div class="camCtrl">
+<button onclick="switchCam()" style="background:#444;color:#fff">🔄 Avant/Arrière</button>
+<button onclick="takePic()" style="background:#FF8C00;color:#fff;width:70px;height:70px;border-radius:50%;font-size:30px">📸</button>
+<button onclick="closeCam()" style="background:#fff;color:#000">✕ Fermer</button>
+</div>
 </div>
 
 <div class="bot">
@@ -54,41 +70,19 @@ body{background:#fff;overflow:hidden}
 </div>
 
 <script>
-const contacts=[
-{name:"Séverine",img:"https://i.pravatar.cc/100?img=5",msg:"Salut Jeff! App orange réussie!"},
-{name:"Maman",img:"https://i.pravatar.cc/100?img=26",msg:"Mon fils est devenu développeur!"},
-{name:"Koffi",img:"https://i.pravatar.cc/100?img=12",msg:"On teste Chat Ivoire ce soir?"},
-{name:"Fatou",img:"https://i.pravatar.cc/100?img=23",msg:"J'ai installé ton app!"},
-{name:"Team Abidjan",img:"https://i.pravatar.cc/100?img=33",msg:"🔥 Bravo Jeff!"},
-{name:"Joel",img:"https://i.pravatar.cc/100?img=15",msg:"Tu codes trop bien!"}
-];
-let cur=null;
-function render(){
-const d=document.getElementById('p-disc');d.innerHTML='';
-contacts.forEach((c,i)=>{
-d.innerHTML+=`<div class="chat-item" onclick="openC(${i})"><img src="${c.img}"><div><div class="n">${c.name}</div><div class="m">${c.msg}</div></div></div>`;
-});
-}
-function showP(id,btn){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-document.querySelectorAll('.bot button').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-}
-function openC(i){
-cur=i;document.getElementById('conv').classList.add('active');
-document.getElementById('cName').textContent=contacts[i].name;
-document.getElementById('cImg').src=contacts[i].img;
-document.getElementById('msgs').innerHTML=`<div class="bubble you">${contacts[i].msg}</div>`;
-}
+const contacts=[{name:"Séverine",img:"https://i.pravatar.cc/100?img=5",msg:"Salut Jeff!"},{name:"Maman",img:"https://i.pravatar.cc/100?img=26",msg:"Bravo mon fils!"},{name:"Koffi",img:"https://i.pravatar.cc/100?img=12",msg:"On teste ce soir?"},{name:"Fatou",img:"https://i.pravatar.cc/100?img=23",msg:"J'ai installé!"},{name:"Team Abidjan",img:"https://i.pravatar.cc/100?img=33",msg:"🔥 Bravo!"},{name:"Joel",img:"https://i.pravatar.cc/100?img=15",msg:"Top!"}];
+let cur=null, stream=null, facing="environment";
+function render(){const d=document.getElementById('p-disc');d.innerHTML='';contacts.forEach((c,i)=>{d.innerHTML+=`<div class="chat-item" onclick="openC(${i})"><img src="${c.img}"><div><b>${c.name}</b><br><small style="color:#666">${c.msg}</small></div></div>`});}
+function showP(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bot button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function openC(i){cur=i;document.getElementById('conv').classList.add('active');document.getElementById('cName').textContent=contacts[i].name;document.getElementById('cImg').src=contacts[i].img;document.getElementById('msgs').innerHTML=`<div class="bubble you">${contacts[i].msg}</div>`;}
 function closeC(){document.getElementById('conv').classList.remove('active');}
-function send(){
-const v=document.getElementById('t').value;if(!v)return;
-document.getElementById('msgs').innerHTML+=`<div class="bubble me">${v}</div>`;
-contacts[cur].msg=v;document.getElementById('t').value='';
-setTimeout(()=>{const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight;},100);
-render();
-}
+function send(){const v=document.getElementById('t').value;if(!v)return;document.getElementById('msgs').innerHTML+=`<div class="bubble me">${v}</div>`;contacts[cur].msg=v;document.getElementById('t').value='';render();}
+function sendFile(inp){if(inp.files[0]){const url=URL.createObjectURL(inp.files[0]);const isV=inp.files[0].type.startsWith('video');document.getElementById('msgs').innerHTML+=`<div class="bubble me">${isV?`<video src="${url}" controls style="max-width:180px;border-radius:10px"></video>`:`<img src="${url}" style="max-width:180px;border-radius:10px">`}</div>`;}}
+async function openCam(){document.getElementById('camView').classList.add('active');startCam();}
+async function startCam(){if(stream)stream.getTracks().forEach(t=>t.stop());try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});document.getElementById('video').srcObject=stream;}catch(e){alert("Autorise la caméra!");}}
+function switchCam(){facing=facing==="environment"?"user":"environment";startCam();}
+function closeCam(){document.getElementById('camView').classList.remove('active');if(stream)stream.getTracks().forEach(t=>t.stop());}
+function takePic(){const v=document.getElementById('video');const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);const url=c.toDataURL('image/jpeg');document.getElementById('msgs').innerHTML+=`<div class="bubble me"><img src="${url}" style="max-width:180px;border-radius:10px"></div>`;closeCam();openC(cur);}
 render();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
 </script>
