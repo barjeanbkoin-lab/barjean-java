@@ -1,13 +1,16 @@
 {
-  "id": "chativoire",
+  "id": "chativoire-app",
   "name": "Chat Ivoire",
   "short_name": "ChatIvoire",
-  "description": "Messagerie 100% ivoirienne - Chat, appels, photos et videos comme WhatsApp",
-  "start_url": "/",
+  "description": "Messagerie 100% ivoirienne - Discute, appelle, partage photos et vidéos comme WhatsApp",
+  "start_url": "/?source=pwa",
   "display": "standalone",
+  "display_override": ["standalone", "browser"],
   "background_color": "#FF8C00",
   "theme_color": "#FF8C00",
   "orientation": "any",
+  "categories": ["social", "communication"],
+  "lang": "fr",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/733/733585.png",
@@ -20,6 +23,22 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://i.pravatar.cc/1080x1920?img=12",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Accueil Chat Ivoire"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nouveau Chat",
+      "url": "/?newchat",
+      "icons": [{ "src": "https://cdn-icons-png.flaticon.com/512/733/733585.png", "sizes": "192x192" }]
     }
   ]
 }
