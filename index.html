@@ -1,13 +1,40 @@
-<!DOCTYPE html><html><body>
-<div id="d">Discussions Grace</div>
-<div id="p2" style="display:none">Personnes</div>
-<div id="n" style="display:none">Notifs</div>
-<div id="me" style="display:none">Menu</div>
-<div style="position:fixed;bottom:0;display:flex;width:100%;background:#fff;border-top:1px solid #ddd">
-<div onclick="show('d')" style="flex:1;text-align:center;padding:10px">Discussions</div>
-<div onclick="show('p2')" style="flex:1;text-align:center;padding:10px">Personnes</div>
-<div onclick="show('n')" style="flex:1;text-align:center;padding:10px">Notifs</div>
-<div onclick="show('me')" style="flex:1;text-align:center;padding:10px">Menu</div>
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;background:#f0f2f5}
+.top{position:fixed;top:0;left:0;right:0;background:#fff;padding:12px;font-weight:bold;border-bottom:1px solid #ddd;z-index:10}
+.content{padding:60px 10px 70px 10px}
+.card{background:#fff;padding:12px;border-radius:8px;margin:8px 0;display:flex;align-items:center}
+.bot{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid #ddd}
+.bot div{flex:1;text-align:center;padding:12px;font-size:14px}
+video{width:100%;border-radius:10px}
+button{background:#0084ff;color:#fff;border:0;padding:10px 18px;border-radius:20px}
+</style></head>
+<body>
+<div class="top" id="title">Discussions</div>
+
+<div id="d" class="content">
+<div class="card"><div style="width:40px;height:40px;background:#0084ff;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:10px">G</div><div><b>Grace Beya</b><br><small>En ligne - Salut JEFF!</small></div></div>
+<div class="card"><div style="width:40px;height:40px;background:#ccc;border-radius:50%;margin-right:10px"></div><div><b>Maman</b><br><small>Appel hier</small></div></div>
+<button onclick="document.getElementById('camBox').style.display='block';startCam()">📷 Ouvrir Caméra</button>
+<div id="camBox" style="display:none;margin-top:10px"><video id="v" autoplay></video><br><button onclick="stopCam()">Fermer</button></div>
 </div>
-<script>function show(x){d.style.display='none';p2.style.display='none';n.style.display='none';me.style.display='none';document.getElementById(x).style.display='block';}</script>
+
+<div id="p2" class="content" style="display:none"><div class="card">Personnes - 2 amis en ligne</div></div>
+<div id="n" class="content" style="display:none"><div class="card">🔔 Notifications - Pas de nouvelle notif</div></div>
+<div id="me" class="content" style="display:none"><div class="card">☰ Menu - JEFF Barjean<br>barjean@gmail.com</div></div>
+
+<div class="bot">
+<div onclick="go('d','Discussions')">💬<br>Discussions</div>
+<div onclick="go('p2','Personnes')">👥<br>Personnes</div>
+<div onclick="go('n','Notifs')">🔔<br>Notifs</div>
+<div onclick="go('me','Menu')">☰<br>Menu</div>
+</div>
+
+<script>
+function go(id,t){document.getElementById('d').style.display='none';document.getElementById('p2').style.display='none';document.getElementById('n').style.display='none';document.getElementById('me').style.display='none';document.getElementById(id).style.display='block';document.getElementById('title').innerText=t}
+let stream=null;
+async function startCam(){try{stream=await navigator.mediaDevices.getUserMedia({video:true});document.getElementById('v').srcObject=stream}catch(e){alert('Caméra bloquée, autorise dans le navigateur')}} 
+function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop())}document.getElementById('camBox').style.display='none'}
+</script>
 </body></html>
