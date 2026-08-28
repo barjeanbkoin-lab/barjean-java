@@ -74,7 +74,7 @@ body{background:#fff;overflow:hidden}
 </div>
 
 <script>
-const contacts=[{name:"Séverine",img:"https://i.pravatar.cc/100?img=5",msg:"Salut!"},{name:"Maman",img:"https://i.pravatar.cc/100?img=26",msg:"Bravo!"},{name:"Koffi",img:"https://i.pravatar.cc/100?img=12",msg:"On teste?"},{name:"Fatou",img:"https://i.pravatar.cc/100?img=23",msg:"Installé!"},{name:"Team Abidjan",img:"https://i.pravatar.cc/100?img=33",msg:"🔥"},{name:"Joel",img:"https://i.pravatar.cc/100?img=15",msg:"Top!"}];
+const contacts=[];
 let cur=null,stream=null,facing="environment";
 function render(){const d=document.getElementById('p-disc');d.innerHTML='';contacts.forEach((c,i)=>{d.innerHTML+=`<div class="chat-item" onclick="openC(${i})"><img src="${c.img}"><div><b>${c.name}</b><br><small style="color:#666">${c.msg}</small></div></div>`});}
 function showP(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bot button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
